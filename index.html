@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablet Compounding Volume & Dosage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tablet Compounding Volume & Dosage Calculator</h1>
+    <form id="compoundForm">
+        <label for="volume">Volume of final product (mL):</label>
+        <input type="number" id="volume" name="volume" required><br>
+
+        <label for="concentration">Desired concentration of active ingredient (%):</label>
+        <input type="number" id="concentration" name="concentration" required><br>
+
+        <label for="tabletStrength">Strength of each tablet (mg):</label>
+        <input type="number" id="tabletStrength" name="tabletStrength" required><br>
+
+        <label for="dosePerDay">Number of milliliters per dose:</label>
+        <input type="number" id="dosePerDay" name="dosePerDay" min="0.1" step="0.1" required><br>
+
+        <label for="timesPerDay">Number of times per day:</label>
+        <input type="number" id="timesPerDay" name="timesPerDay" min="1" required><br>
+
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+
+    <div id="results">
+        <h2>Results</h2>
+        <p id="tabletsNeeded"></p>
+        <p id="totalAmount"></p>
+    </div>
+
+    <script>
+        function calculate() {
+            var volume = parseFloat(document.getElementById("volume").value);
+            var concentration = parseFloat(document.getElementById("concentration").value);
+            var tabletStrength = parseFloat(document.getElementById("tabletStrength").value);
+            var dosePerDay = parseFloat(document.getElementById("dosePerDay").value);
+            var timesPerDay = parseInt(document.getElementById("timesPerDay").value);
+
+            var volume_mg = volume * 1000; // Convert volume to mg (1 g = 1 mL)
+            var amountNeeded_mg = volume_mg * (concentration / 100); // Calculate amount needed in mg
+            var tabletsNeeded = amountNeeded_mg / tabletStrength; // Calculate number of tablets needed
+            var totalAmount_ml = dosePerDay * timesPerDay; // Calculate total amount per day in mL
+
+            document.getElementById("tabletsNeeded").innerText = "Number of tablets needed: " + tabletsNeeded.toFixed(2);
+            document.getElementById("totalAmount").innerText = "Total amount per day: " + totalAmount_ml.toFixed(2) + " mL";
+            document.getElementById("results").style.display = "block";
+        }
+    </script>
+</body>
+</html>
